@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.5.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -40,6 +40,7 @@ flutter:
   assets:
     - assets/images/aberto_0.jpeg
     - assets/images/aberto_1.jpeg
+    - assets/images/aberto_2.jpeg
     - assets/images/aberto_3.jpeg
     - assets/images/aberto_4.jpeg
     - assets/images/aberto_5.jpeg
