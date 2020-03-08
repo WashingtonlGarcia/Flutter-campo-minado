@@ -38,17 +38,28 @@ class ResultadoWidget extends StatelessWidget implements PreferredSizeWidget {
         child: SafeArea(
           child: Container(
             padding: EdgeInsets.all(10),
-            child: CircleAvatar(
-              backgroundColor: _getColor(),
-              child: IconButton(
-                padding: EdgeInsets.all(0),
-                icon: Icon(
-                  _getIcon(),
-                  size: 35,
-                  color: Colors.black,
-                ),
-                onPressed: onReniciar,
+            child: GestureDetector(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircleAvatar(
+                    backgroundColor: _getColor(),
+                    child: Icon(
+                      _getIcon(),
+                      size: 35,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    " Campo minado",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
               ),
+              onTap: onReniciar,
             ),
           ),
         ));

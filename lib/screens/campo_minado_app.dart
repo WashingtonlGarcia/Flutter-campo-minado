@@ -12,7 +12,7 @@ class CampoMinado extends StatefulWidget {
 
 class _CampoMinadoState extends State<CampoMinado> {
   bool _venceu;
-  Tabuleiro _tabuleiro = Tabuleiro(colunas: 15, linhas: 15, qtdeBombas: 20);
+  Tabuleiro _tabuleiro;
   _reniciar() {
     setState(() {
       _venceu = null;
@@ -43,15 +43,29 @@ class _CampoMinadoState extends State<CampoMinado> {
     });
   }
 
+  Tabuleiro _getTabuleiro(double largura, double altura) {
+    if (_tabuleiro == null) {
+      int qtdeColunas = 15;
+      double tamanhoCampo = largura / qtdeColunas;
+      int qtdeLinhas = (altura / tamanhoCampo).floor();
+      _tabuleiro =
+          Tabuleiro(linhas: qtdeLinhas, colunas: qtdeColunas, qtdeBombas: 50);
+    }
+    return _tabuleiro;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       appBar: ResultadoWidget(venceu: _venceu, onReniciar: _reniciar),
-      body: Container(
-          child: TabuleiroWidget(
-              tabuleiro: _tabuleiro,
-              onAbrir: _abrir,
-              onAlternarMarcacao: _alternarMarcacao)),
+      body: Container(child: LayoutBuilder(builder: (ctx, constrains) {
+        return TabuleiroWidget(
+          tabuleiro: _getTabuleiro(constrains.maxWidth, constrains.maxHeight),
+          onAbrir: _abrir,
+          onAlternarMarcacao: _alternarMarcacao,
+        );
+      })),
     );
   }
 }
