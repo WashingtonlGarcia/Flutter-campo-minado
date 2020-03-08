@@ -1,14 +1,14 @@
-import 'dart:math';
-
-import 'campo.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:math';
+import 'campo.dart';
 
 class Tabuleiro {
   final int linhas;
   final int colunas;
   final int qtdeBombas;
 
-  final List<Campo> _campo = [];
+  final List<Campo> _campos = [];
+
   Tabuleiro({
     @required this.linhas,
     @required this.colunas,
@@ -16,54 +16,56 @@ class Tabuleiro {
   }) {
     _criarCampos();
     _relacionarVizinhos();
+    _sortearMinas();
   }
 
-  void reniciar() {
-    _campo.forEach((element) {
-      element.reniciar();
-      _sortearMinas();
-    });
+  void reiniciar() {
+    _campos.forEach((c) => c.reiniciar());
+    _sortearMinas();
   }
 
   void revelarBombas() {
-    _campo.forEach((element) => element.revelarBombas());
+    _campos.forEach((c) => c.revelarBomba());
   }
 
   void _criarCampos() {
     for (int l = 0; l < linhas; l++) {
       for (int c = 0; c < colunas; c++) {
-        _campo.add(Campo(linha: l, coluna: c));
+        _campos.add(Campo(linha: l, coluna: c));
       }
     }
   }
 
   void _relacionarVizinhos() {
-    for (var campo in _campo) {
-      for (var vizinho in _campo) {
-        campo.adicionarVizinho((vizinho));
+    for (var campo in _campos) {
+      for (var vizinho in _campos) {
+        campo.adicionarVizinho(vizinho);
       }
     }
   }
 
   void _sortearMinas() {
     int sorteadas = 0;
+
     if (qtdeBombas > linhas * colunas) {
       return;
     }
+
     while (sorteadas < qtdeBombas) {
-      int i = Random().nextInt(_campo.length);
-      if (_campo[i].minado) {
+      int i = Random().nextInt(_campos.length);
+
+      if (!_campos[i].minado) {
         sorteadas++;
-        _campo[i].minar();
+        _campos[i].minar();
       }
     }
   }
 
   List<Campo> get campos {
-    return _campo;
+    return _campos;
   }
 
   bool get resolvido {
-    return _campo.every((element) => element.resolvido);
+    return _campos.every((c) => c.resolvido);
   }
 }

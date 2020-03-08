@@ -1,4 +1,5 @@
 import 'package:campoMinado/components/tabuleiro_widget.dart';
+import 'package:campoMinado/models/explosao_exception.dart';
 import 'package:campoMinado/models/tabuleiro.dart';
 import 'package:flutter/material.dart';
 import '../components/resultado_widget.dart';
@@ -11,20 +12,34 @@ class CampoMinado extends StatefulWidget {
 
 class _CampoMinadoState extends State<CampoMinado> {
   bool _venceu;
-  Tabuleiro _tabuleiro = Tabuleiro(colunas: 15, linhas: 15, qtdeBombas: 10);
+  Tabuleiro _tabuleiro = Tabuleiro(colunas: 15, linhas: 15, qtdeBombas: 20);
   _reniciar() {
-    print("reniciar");
+    setState(() {
+      _venceu = null;
+      _tabuleiro.reiniciar();
+    });
   }
 
   _abrir(Campo c) {
+    if (_venceu != null) {
+      return;
+    }
     setState(() {
-      c.abrir();
+      try {
+        c.abrir();
+      } on ExplosaoException {
+        _venceu = false;
+        _tabuleiro.revelarBombas();
+      }
     });
   }
 
   _alternarMarcacao(Campo c) {
     setState(() {
       c.alternarMarcacao();
+      if (_tabuleiro.resolvido) {
+        _venceu = true;
+      }
     });
   }
 
