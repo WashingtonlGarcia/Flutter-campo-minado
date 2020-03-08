@@ -1,8 +1,8 @@
+import 'package:campoMinado/components/tabuleiro_widget.dart';
+import 'package:campoMinado/models/tabuleiro.dart';
 import 'package:flutter/material.dart';
 import '../components/resultado_widget.dart';
 import '../models/campo.dart';
-import '../models/explosao_exception.dart';
-import '../components/campo_widget.dart';
 
 class CampoMinado extends StatelessWidget {
   final Campo campo = Campo(linha: 0, coluna: 0);
@@ -20,26 +20,13 @@ class CampoMinado extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Campo vizinho = Campo(linha: 1, coluna: 0);
-    vizinho.minar();
-    Campo vizinho2 = Campo(linha: 1, coluna: 1);
-    vizinho2.minar();
-    campo.adicionarVizinho(vizinho);
-    campo.adicionarVizinho(vizinho2);
-    try {
-      //campo.minar();
-      campo.alternarMarcacao();
-      //campo.abrir();
-    } on ExplosaoException {}
     return Scaffold(
       appBar: ResultadoWidget(venceu: true, onReniciar: _reniciar),
       body: Container(
-        child: CampoWidget(
-          campo: campo,
-          onAbrir: _abrir,
-          onAlternarMarcacao: _alternarMarcacao,
-        ),
-      ),
+          child: TabuleiroWidget(
+              tabuleiro: Tabuleiro(colunas: 15, linhas: 15, qtdeBombas: 10),
+              onAbrir: _abrir,
+              onAlternarMarcacao: _alternarMarcacao)),
     );
   }
 }
